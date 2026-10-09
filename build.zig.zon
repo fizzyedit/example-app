@@ -8,8 +8,8 @@
         // by commit; fizzy's CI builds this repo against each of its pull requests, so a change
         // there that breaks an outside app fails before it lands.
         .fizzy = .{
-            .url = "https://github.com/fizzyedit/fizzy/archive/f69f7943c3a5.tar.gz",
-            .hash = "fizzy-0.2.0-c46aVtNWigCgXBcB-4j9c5Cv9NhTQpG72wJc6itqil2m",
+            .url = "https://github.com/fizzyedit/fizzy/archive/a2b4e0a7d6b3.tar.gz",
+            .hash = "fizzy-0.2.0-c46aVokhiwCxp5KQ-d44REid0496AzQ8hGP_DHEcyykr",
         },
         // The plugins this app bundles beyond fizzy's own: fizzyedit/example-plugin, as any
         // plugin from its own repo, and this app's own, which also builds alone as a dylib
