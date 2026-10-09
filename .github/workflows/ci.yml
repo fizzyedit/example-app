@@ -23,3 +23,5 @@ jobs:
             echo "::endgroup::"
           done
           zig build -Dshape=studio -Dzon-layout=true --summary all
+      - name: Build the replay app
+        run: zig build replay --summary all

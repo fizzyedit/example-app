@@ -19,6 +19,12 @@
             .hash = "hello-0.1.0-c1Gg4rQXAAA7Ea4vZqD4jAS7eLtXJW3QglYM4HB-17Lw",
         },
         .shader = .{ .path = "plugins/shader" },
+        // The plugin SDK alone, for the replay app: its pinned dvui and `tape` / `replay`, with
+        // nothing of fizzy the app.
+        .fizzy_sdk = .{
+            .url = "https://github.com/fizzyedit/fizzy/releases/download/sdk-v0.2.19/fizzy-sdk-v0.2.19.tar.gz",
+            .hash = "fizzy-0.2.19-SGBwY8MiIQDGX5QO1AMQHemD99HG9DNnjTLQ4Pu1bpf5",
+        },
     },
-    .paths = .{ "build.zig", "build.zig.zon", "shapes", "plugins", "README.md", "LICENSE" },
+    .paths = .{ "build.zig", "build.zig.zon", "shapes", "plugins", "replay", "README.md", "LICENSE" },
 }
