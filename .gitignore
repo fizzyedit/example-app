@@ -1,0 +1,5 @@
+.zig-cache/
+zig-out/
+zig-pkg/
+.profile/
+.DS_Store

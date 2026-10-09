@@ -1,0 +1,14 @@
+.{
+    .name = .shader,
+    .version = "0.1.0",
+    .minimum_zig_version = "0.16.0",
+    .paths = .{ "build.zig", "build.zig.zon", "plugin.zig", "plugin.zig.zon", "metaballs.glsl" },
+    .fingerprint = 0xfff39e28b2ebba24,
+    .dependencies = .{
+        .fizzy = .{
+            // The published SDK: a plugin builds from a clean clone of its own repo.
+            .url = "https://github.com/fizzyedit/fizzy/releases/download/sdk-v0.2.18/fizzy-sdk-v0.2.18.tar.gz",
+            .hash = "fizzy-0.2.18-SGBwYzTcHgB679qozyk1xNBTyrOQYoKUNI5lvEX5_v6a",
+        },
+    },
+}

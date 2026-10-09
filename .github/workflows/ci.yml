@@ -1,0 +1,25 @@
+# Builds the fizzy app in every shape on each push and pull request. Fizzy's own CI builds this
+# repo against each fizzy pull request as well, from a tarball of that tree.
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: mlugg/setup-zig@v2
+        with:
+          version: "0.16.0"
+      - name: Build every shape
+        run: |
+          for shape in minimal studio endless; do
+            echo "::group::$shape"
+            zig build -Dshape=$shape --summary all
+            echo "::endgroup::"
+          done
+          zig build -Dshape=studio -Dzon-layout=true --summary all
