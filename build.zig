@@ -3,11 +3,15 @@
 //! `zig build run-fizzy` builds a fizzy app: fizzy's framework and its plugins, in one of the
 //! shapes in `shapes/` (`-Dshape=`), with this repo's plugins bundled in.
 //!
+//! `zig build run-replay` builds a plain dvui app, nothing of fizzy, with tape playback from the
+//! plugin SDK's `replay`: it plays a tape into its own window and prints what is on screen.
+//!
 //! `zig build run-dvui` will build a plain dvui app on fizzy's backend: dvui's widgets, with
 //! floating windows, menus and dialogs as OS windows of their own. It needs the backend as a
 //! package of its own first.
 const std = @import("std");
 const fizzy = @import("fizzy");
+const fizzy_sdk = @import("fizzy_sdk");
 
 /// The layout shapes. Each is one file in `shapes/`, read end to end and copied, never
 /// configured: a shape that needs something new is a new file.
@@ -66,6 +70,30 @@ pub fn build(b: *std.Build) !void {
     run_fizzy.step.dependOn(b.getInstallStep());
     if (b.args) |args| run_fizzy.addArgs(args);
     b.step("run-fizzy", "Run the fizzy app in the shape -Dshape picks").dependOn(&run_fizzy.step);
+
+    // A plain dvui app with tape playback: dvui as any app has it (the SDK pins it, the app picks
+    // its own backend) and `tape` and `replay` built against it. Not part of the default install.
+    const sdk = b.dependency("fizzy_sdk", .{ .target = target, .optimize = optimize });
+    const dvui_dep = sdk.builder.dependency("dvui", .{ .target = target, .optimize = optimize, .backend = .sdl3 });
+    const dvui_mod = dvui_dep.module("dvui_sdl3");
+    const automation = fizzy_sdk.replay.modules(b, sdk.builder, dvui_mod, target, optimize);
+    const replay_exe = b.addExecutable(.{
+        .name = "replay-app",
+        .root_module = b.createModule(.{
+            .target = target,
+            .optimize = optimize,
+            .root_source_file = b.path("replay/main.zig"),
+        }),
+    });
+    replay_exe.root_module.addImport("dvui", dvui_mod);
+    replay_exe.root_module.addImport("tape", automation.tape);
+    replay_exe.root_module.addImport("replay", automation.replay);
+    const install_replay = b.addInstallArtifact(replay_exe, .{});
+    b.step("replay", "Build the replay app").dependOn(&install_replay.step);
+    const run_replay = b.addRunArtifact(replay_exe);
+    run_replay.step.dependOn(&install_replay.step);
+    if (b.args) |args| run_replay.addArgs(args);
+    b.step("run-replay", "Run the replay app: a plain dvui app with tape playback").dependOn(&run_replay.step);
 
     // Where the dvui app goes: dvui's own widgets on fizzy's backend. Waits on the backend
     // becoming a package an app depends on without the rest of fizzy.

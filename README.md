@@ -13,6 +13,12 @@ Each is a whole fizzy app: fizzy's frame, its built-in plugins (files, text, ima
 in a layout of this repo's own, with two more plugins bundled in. Each shape gets its own
 executable, window title and config directory (`minimalapp`, `studioapp`, `endlessapp`).
 
+`zig build run-replay` is a plain dvui app, nothing of fizzy, with tape playback from the plugin
+SDK's `replay` (`replay/main.zig`). At launch it plays a live tape into its own window (clicks,
+typing, a command), draws the tape's pointer, stops if you click or type, and when the tape ends
+prints what is on screen as text: the names a test or an automation client reads instead of
+pixels. It depends only on the SDK package.
+
 `zig build run-dvui` is where a plain dvui app on fizzy's backend goes: dvui's own widgets, with
 floating windows, menus and dialogs as OS windows of their own (Liquid Glass windows on macOS).
 It needs fizzy's backend as a package an app can depend on without the rest of fizzy, which is
