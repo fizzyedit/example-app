@@ -19,10 +19,12 @@ typing, a command), draws the tape's pointer, stops if you click or type, and wh
 prints what is on screen as text: the names a test or an automation client reads instead of
 pixels. It depends only on the SDK package.
 
-`zig build run-dvui` is where a plain dvui app on fizzy's backend goes: dvui's own widgets, with
-floating windows, menus and dialogs as OS windows of their own (Liquid Glass windows on macOS).
-It needs fizzy's backend as a package an app can depend on without the rest of fizzy, which is
-not done yet; until then the step says so.
+`zig build run-dvui` is a plain dvui app on fizzy's backend (`dvui/main.zig`): dvui's own
+widgets, and each `dvui.floatingWindow` an OS window of its own, moved, resized and closed by the
+OS like any window. `fizzy.addDvui` gives it dvui, the backend and the backend's `viewports`.
+`-Ddvui-backend=sdl3` builds the same app on dvui's own SDL3 backend, where there are no OS
+windows besides the main one and the floating windows stay in it, as in any dvui app. Menus and
+dialogs as OS windows of their own come later.
 
 ## Shapes
 
