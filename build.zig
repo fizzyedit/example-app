@@ -6,9 +6,9 @@
 //! `zig build run-replay` builds a plain dvui app, nothing of fizzy, with tape playback from the
 //! plugin SDK's `replay`: it plays a tape into its own window and prints what is on screen.
 //!
-//! `zig build run-dvui` will build a plain dvui app on fizzy's backend: dvui's widgets, with
-//! floating windows, menus and dialogs as OS windows of their own. It needs the backend as a
-//! package of its own first.
+//! `zig build run-dvui` builds a plain dvui app on fizzy's backend: dvui's own widgets, each
+//! floating window an OS window of its own. `-Ddvui-backend=sdl3` builds the same app on dvui's own
+//! SDL3 backend, where the floating windows stay in the main window.
 const std = @import("std");
 const fizzy = @import("fizzy");
 const fizzy_sdk = @import("fizzy_sdk");
@@ -95,9 +95,22 @@ pub fn build(b: *std.Build) !void {
     if (b.args) |args| run_replay.addArgs(args);
     b.step("run-replay", "Run the replay app: a plain dvui app with tape playback").dependOn(&run_replay.step);
 
-    // Where the dvui app goes: dvui's own widgets on fizzy's backend. Waits on the backend
-    // becoming a package an app depends on without the rest of fizzy.
-    b.step("run-dvui", "Run a plain dvui app on fizzy's backend (not yet)").dependOn(
-        &b.addFail("run-dvui needs fizzy's backend as a package of its own; see this repo's README").step,
-    );
+    // A plain dvui app on fizzy's backend (`dvui/main.zig`): dvui and the backend from fizzy, the
+    // backend's `viewports` for its floating windows' OS windows. Not part of the default install.
+    const dvui_backend = b.option(fizzy.NativeBackend, "dvui-backend", "run-dvui: fizzy (OS windows) or sdl3 (dvui's own, the main window only)") orelse .fizzy;
+    const dvui_exe = b.addExecutable(.{
+        .name = "dvui-app",
+        .root_module = b.createModule(.{
+            .target = target,
+            .optimize = optimize,
+            .root_source_file = b.path("dvui/main.zig"),
+        }),
+    });
+    try fizzy.addDvui(fizzy_dep, dvui_exe.root_module, dvui_backend);
+    const install_dvui = b.addInstallArtifact(dvui_exe, .{});
+    b.step("dvui", "Build the dvui app").dependOn(&install_dvui.step);
+    const run_dvui = b.addRunArtifact(dvui_exe);
+    run_dvui.step.dependOn(&install_dvui.step);
+    if (b.args) |args| run_dvui.addArgs(args);
+    b.step("run-dvui", "Run a plain dvui app on fizzy's backend, its floating windows OS windows").dependOn(&run_dvui.step);
 }
