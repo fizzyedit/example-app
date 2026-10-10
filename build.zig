@@ -6,9 +6,9 @@
 //! `zig build run-replay` builds a plain dvui app, nothing of fizzy, with tape playback from the
 //! plugin SDK's `replay`: it plays a tape into its own window and prints what is on screen.
 //!
-//! `zig build run-dvui` builds a plain dvui app on fizzy's backend: dvui's own widgets, each
-//! floating window an OS window of its own. `-Ddvui-backend=sdl3` builds the same app on dvui's own
-//! SDL3 backend, where the floating windows stay in the main window.
+//! `zig build run-dvui` builds a plain dvui app on fizzy's backend: dvui's own widgets, and OS
+//! windows opened with `dvui.osWindow`. `-Ddvui-backend=sdl3` builds the same app on dvui's own
+//! SDL3 backend, where `dvui.osWindow` opens a `dvui.Window` of its own.
 const std = @import("std");
 const fizzy = @import("fizzy");
 const fizzy_sdk = @import("fizzy_sdk");
@@ -95,9 +95,9 @@ pub fn build(b: *std.Build) !void {
     if (b.args) |args| run_replay.addArgs(args);
     b.step("run-replay", "Run the replay app: a plain dvui app with tape playback").dependOn(&run_replay.step);
 
-    // A plain dvui app on fizzy's backend (`dvui/main.zig`): dvui and the backend from fizzy, the
-    // backend's `viewports` for its floating windows' OS windows. Not part of the default install.
-    const dvui_backend = b.option(fizzy.NativeBackend, "dvui-backend", "run-dvui: fizzy (OS windows) or sdl3 (dvui's own, the main window only)") orelse .fizzy;
+    // A plain dvui app on fizzy's backend (`dvui/main.zig`): dvui and the backend from fizzy, its
+    // `dvui.osWindow`s OS windows of their own there. Not part of the default install.
+    const dvui_backend = b.option(fizzy.NativeBackend, "dvui-backend", "run-dvui: fizzy (fizzy's backend) or sdl3 (dvui's own)") orelse .fizzy;
     const dvui_exe = b.addExecutable(.{
         .name = "dvui-app",
         .root_module = b.createModule(.{
@@ -112,5 +112,5 @@ pub fn build(b: *std.Build) !void {
     const run_dvui = b.addRunArtifact(dvui_exe);
     run_dvui.step.dependOn(&install_dvui.step);
     if (b.args) |args| run_dvui.addArgs(args);
-    b.step("run-dvui", "Run a plain dvui app on fizzy's backend, its floating windows OS windows").dependOn(&run_dvui.step);
+    b.step("run-dvui", "Run a plain dvui app on fizzy's backend, its dvui.osWindows OS windows").dependOn(&run_dvui.step);
 }
