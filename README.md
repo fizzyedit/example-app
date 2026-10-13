@@ -20,11 +20,13 @@ prints what is on screen as text: the names a test or an automation client reads
 pixels. It depends only on the SDK package.
 
 `zig build run-dvui` is a plain dvui app on fizzy's backend (`dvui/main.zig`): dvui's own
-widgets, and each `dvui.floatingWindow` an OS window of its own, moved, resized and closed by the
-OS like any window. `fizzy.addDvui` gives it dvui, the backend and the backend's `viewports`.
-`-Ddvui-backend=sdl3` builds the same app on dvui's own SDL3 backend, where there are no OS
-windows besides the main one and the floating windows stay in it, as in any dvui app. Menus and
-dialogs as OS windows of their own come later.
+widgets and its demo, and OS windows opened with dvui's own `dvui.osWindow` — nothing but dvui in
+the app's code. On fizzy's backend each is drawn from the one `dvui.Window` and looks as a dvui
+floating window does (its header and close button, no OS title bar); the OS moves it by its
+header, and it resizes from its edges. `fizzy.addDvui` gives the app dvui and the backend.
+`-Ddvui-backend=sdl3` builds the same code on dvui's own SDL3 backend, where `dvui.osWindow`
+opens a `dvui.Window` of its own, as dvui does anywhere. Menus and dialogs as OS windows of their
+own come later.
 
 ## Shapes
 
