@@ -58,10 +58,16 @@ pub fn build(b: *std.Build) !void {
     });
     const hello = b.dependency("hello", .{ .target = target, .optimize = optimize });
     const shader = b.dependency("shader", .{ .target = target, .optimize = optimize });
-    try fizzy.buildApp(fizzy_dep, &.{
+    // Fizzy's own plugins are entries in the list like any other. The minimal shape's one
+    // region takes documents, so it links the two that open them; the others link all of fizzy's.
+    const fizzys: []const fizzy.BundledPlugin = switch (shape) {
+        .minimal => &.{ fizzy.plugins.workbench, fizzy.plugins.text },
+        .studio, .endless => &fizzy.plugins.all,
+    };
+    try fizzy.buildApp(fizzy_dep, try std.mem.concat(b.allocator, fizzy.BundledPlugin, &.{ fizzys, &.{
         .{ .name = "hello", .module = hello.module("plugin") },
         .{ .name = "shader", .module = shader.module("plugin") },
-    });
+    } }));
 
     const exe = fizzy_dep.artifact(name);
     b.installArtifact(exe);
