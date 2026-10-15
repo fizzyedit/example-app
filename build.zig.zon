@@ -2,7 +2,7 @@
     .name = .fizzy_example_app,
     .version = "0.1.0",
     .fingerprint = 0x70a7611209421df7,
-    .minimum_zig_version = "0.16.0",
+    .minimum_zig_version = "0.17.0",
     .dependencies = .{
         // Fizzy, the whole repo: an app builds on its framework, not only the plugin SDK. Pinned
         // by commit; fizzy's CI builds this repo against each of its pull requests, so a change

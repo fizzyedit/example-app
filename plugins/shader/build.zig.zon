@@ -1,7 +1,7 @@
 .{
     .name = .shader,
     .version = "0.1.0",
-    .minimum_zig_version = "0.16.0",
+    .minimum_zig_version = "0.17.0",
     .paths = .{ "build.zig", "build.zig.zon", "plugin.zig", "plugin.zig.zon", "metaballs.glsl" },
     .fingerprint = 0xfff39e28b2ebba24,
     .dependencies = .{
