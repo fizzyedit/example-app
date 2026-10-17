@@ -1,13 +1,13 @@
 //! A plain dvui app on fizzy's backend: dvui's own widgets, its demo, and OS windows of its own
 //! through `dvui.osWindow` — nothing of fizzy the editor, and nothing but dvui in the app's code.
 //!
-//! On fizzy's backend every floating window that is not modal, `dvui.osWindow`'s and dvui's demo
-//! alike, is shown in an OS window of its own: the OS's title bar and buttons in the theme's colour,
-//! as on the main window, and the floating window's content below. The OS moves, resizes, zooms and
-//! closes it, and keeps it above the main window. The backend does all of it
-//! (`backend/src/os_windows.zig` in fizzy). On dvui's own SDL3 backend (`-Ddvui-backend=sdl3`)
-//! `dvui.osWindow` opens a `dvui.Window` of its own instead, and the demo stays in the main window,
-//! as dvui does anywhere.
+//! On fizzy's backend each `dvui.osWindow` is a floating window in the one frame, shown in an OS
+//! window of its own: the OS's title bar and buttons in the theme's colour, as on the main window,
+//! and the floating window's content below. The OS moves, resizes, zooms and closes it; on macOS it
+//! is an ordinary window, with a full screen of its own. The backend does all of it
+//! (`backend/src/os_windows.zig` in fizzy). Every other floating window, dvui's demo among them,
+//! stays in the main window, as in dvui's own example. On dvui's own SDL3 backend
+//! (`-Ddvui-backend=sdl3`) `dvui.osWindow` opens a `dvui.Window` of its own instead.
 const std = @import("std");
 const dvui = @import("dvui");
 
