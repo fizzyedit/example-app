@@ -1,14 +1,13 @@
 //! A plain dvui app on fizzy's backend: dvui's own widgets, its demo, and OS windows of its own
 //! through `dvui.osWindow` — nothing of fizzy the editor, and nothing but dvui in the app's code.
 //!
-//! On fizzy's backend each `dvui.osWindow` is a floating window in the one frame, shown in an OS
-//! window of its own that looks just as the floating window does in the main window: dvui's header
-//! and close button, no OS title bar. The OS moves it by its header; it resizes itself from its
-//! edges, as a floating window does, and its window follows. The backend does all of it
+//! On fizzy's backend every floating window that is not modal, `dvui.osWindow`'s and dvui's demo
+//! alike, is shown in an OS window of its own: the OS's title bar and buttons in the theme's colour,
+//! as on the main window, and the floating window's content below. The OS moves, resizes, zooms and
+//! closes it, and keeps it above the main window. The backend does all of it
 //! (`backend/src/os_windows.zig` in fizzy). On dvui's own SDL3 backend (`-Ddvui-backend=sdl3`)
-//! `dvui.osWindow` opens a `dvui.Window` of its own instead, as dvui does anywhere.
-//!
-//! dvui's demo is a floating window, and stays one: in the main window, as in dvui's own example.
+//! `dvui.osWindow` opens a `dvui.Window` of its own instead, and the demo stays in the main window,
+//! as dvui does anywhere.
 const std = @import("std");
 const dvui = @import("dvui");
 
@@ -47,6 +46,9 @@ fn frame() !dvui.App.Result {
         newWindow();
     }
     mainWindow();
+    // dvui's demo first: a window opens over those opened before it, and the demo, centred and much
+    // the larger, hid the app's own windows opened under it.
+    dvui.Examples.demo(.lite);
     for (&windows, 0..) |*slot, i| if (slot.*) |*w| {
         if (!w.open) {
             slot.* = null;
@@ -54,12 +56,11 @@ fn frame() !dvui.App.Result {
         }
         osWindow(w, i);
     };
-    dvui.Examples.demo(.lite);
     return .ok;
 }
 
 fn mainWindow() void {
-    var box = dvui.box(@src(), .{}, .{ .expand = .both, .padding = .all(16) });
+    var box = dvui.box(@src(), .{}, .{ .expand = .both, .padding = .all(16), .style = .window, .background = true });
     defer box.deinit();
     dvui.labelNoFmt(@src(), "dvui's own widgets on fizzy's backend.", .{}, .{ .font = .theme(.title) });
     dvui.labelNoFmt(@src(), "Each window opened here is a dvui.osWindow.", .{}, .{});
