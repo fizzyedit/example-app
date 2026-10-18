@@ -38,12 +38,11 @@ var made: u32 = 0;
 var started = false;
 
 fn frame() !dvui.App.Result {
-    // dvui's demo and two OS windows to begin with.
+    // dvui's demo, in the main window, to begin with. An OS window opens only when one is asked
+    // for ("New window"), or when a floating window is dragged out of the app's windows.
     if (!started) {
         started = true;
         dvui.Examples.show_demo_window = true;
-        newWindow();
-        newWindow();
     }
     mainWindow();
     // dvui's demo first: a window opens over those opened before it, and the demo, centred and much
