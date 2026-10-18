@@ -15,7 +15,7 @@
         // plugin from its own repo, and this app's own, which also builds alone as a dylib
         // (`cd plugins/shader && zig build`).
         .hello = .{
-            .url = "git+https://github.com/fizzyedit/example-plugin#e4694bca51df6b07ae0f34e090919b22ba24da5a",
+            .url = "git+https://github.com/fizzyedit/example-plugin#592a7386f3a27e20df53dff9b1e2f854ffad7a7b",
             .hash = "hello-0.1.0-c1Gg4roXAABn7yCeQrlZVv3QJ7mAHsii6gFe1E6R2H7r",
         },
         .shader = .{ .path = "plugins/shader" },
