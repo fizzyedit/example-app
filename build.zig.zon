@@ -8,22 +8,22 @@
         // by commit; fizzy's CI builds this repo against each of its pull requests, so a change
         // there that breaks an outside app fails before it lands.
         .fizzy = .{
-            .url = "https://github.com/fizzyedit/fizzy/archive/75fd7f0ed1440432893238f75664e9680a56a123.tar.gz",
-            .hash = "fizzy-0.2.0-c46aVj4MkABq503RNbfyqugEU7A-BkJreTBFDhNbl6uF",
+            .url = "git+https://github.com/fizzyedit/fizzy#44ff62a7f757dbeca68bcc63df10967f12867f09",
+            .hash = "fizzy-0.2.0-c46aVk04ogAB94dagVVhnnXC7aQkakA2xI8itTEu3u2G",
         },
         // The plugins this app bundles beyond fizzy's own: fizzyedit/example-plugin, as any
         // plugin from its own repo, and this app's own, which also builds alone as a dylib
         // (`cd plugins/shader && zig build`).
         .hello = .{
-            .url = "https://github.com/fizzyedit/example-plugin/archive/838041afce45.tar.gz",
-            .hash = "hello-0.1.0-c1Gg4rQXAAA7Ea4vZqD4jAS7eLtXJW3QglYM4HB-17Lw",
+            .url = "git+https://github.com/fizzyedit/example-plugin#e4694bca51df6b07ae0f34e090919b22ba24da5a",
+            .hash = "hello-0.1.0-c1Gg4roXAABn7yCeQrlZVv3QJ7mAHsii6gFe1E6R2H7r",
         },
         .shader = .{ .path = "plugins/shader" },
         // The plugin SDK alone, for the replay app: its pinned dvui and `tape` / `replay`, with
         // nothing of fizzy the app.
         .fizzy_sdk = .{
-            .url = "https://github.com/fizzyedit/fizzy/releases/download/sdk-v0.2.20/fizzy-sdk-v0.2.20.tar.gz",
-            .hash = "fizzy-0.2.20-SGBwY7BcIQAqHKHzaj0vwADkUQNdpiap19SmKZ29Rp0W",
+            .url = "https://github.com/fizzyedit/fizzy/releases/download/sdk-v0.2.30/fizzy-sdk-v0.2.30.tar.gz",
+            .hash = "fizzy-0.2.30-SGBwY1QnJwDznUMVnSLATxXgH2e8_Vz7eMwLj9UQ0sVU",
         },
     },
     .paths = .{ "build.zig", "build.zig.zon", "shapes", "plugins", "replay", "dvui", "README.md", "LICENSE" },

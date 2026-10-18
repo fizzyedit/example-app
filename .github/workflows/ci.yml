@@ -1,14 +1,9 @@
 # Builds the fizzy app in every shape on each push and pull request. Fizzy's own CI builds this
 # repo against each fizzy pull request as well, from a tarball of that tree.
-#
-# ZIG017: on the zig-0.17 branch the pins here are still the 0.16 releases, until fizzy's first
-# 0.17 SDK is released. So this branch is built as fizzy's CI builds it: by fizzy's
-# `scripts/check-examples.sh` on its `zig/0.17` branch, with this checkout and example-plugin's
-# zig-0.17 branch in place of the pins. Back to building the pins on Zig 0.17 at the merge.
 name: CI
 on:
   push:
-    branches: [main, zig-0.17]
+    branches: [main]
   pull_request:
   workflow_dispatch:
 
@@ -17,24 +12,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          path: examples/example-app
-      - uses: actions/checkout@v4
-        with:
-          repository: fizzyedit/example-plugin
-          ref: zig-0.17
-          path: examples/example-plugin
-      - uses: actions/checkout@v4
-        with:
-          repository: fizzyedit/fizzy
-          ref: zig/0.17
-          path: fizzy
       - uses: mlugg/setup-zig@v2
         with:
           version: "0.17.0"
-          use-cache: false
-      - name: Pre-create Zig cache tmp/
-        run: mkdir -p "$ZIG_GLOBAL_CACHE_DIR/tmp" "$ZIG_LOCAL_CACHE_DIR/tmp"
-      - name: Build every shape, the replay app and the dvui app against fizzy's zig/0.17
-        working-directory: fizzy
-        run: EXAMPLES_DIR="$GITHUB_WORKSPACE/examples" bash scripts/ci-retry.sh bash scripts/check-examples.sh
+      - name: Build every shape
+        run: |
+          for shape in minimal studio endless; do
+            echo "::group::$shape"
+            zig build -Dshape=$shape --summary all
+            echo "::endgroup::"
+          done
+          zig build -Dshape=studio -Dzon-layout=true --summary all
+      - name: Build the replay app
+        run: zig build replay --summary all
+      - name: Build the dvui app
+        run: zig build dvui --summary all
