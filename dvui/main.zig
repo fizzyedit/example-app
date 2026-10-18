@@ -95,7 +95,7 @@ fn materialPicker() void {
     }
     dvui.labelNoFmt(@src(), "Transparency", .{}, .{ .gravity_y = 0.5, .margin = .{ .x = 12 } });
     var transparency = if (B.window_material.kind == .none) 0 else 1 - B.window_material.opacity;
-    if (dvui.slider(@src(), .{ .fraction = &transparency }, .{ .min_size_content = .{ .w = 160 }, .gravity_y = 0.5 })) {
+    if (dvui.slider(@src(), .{ .fraction = &transparency }, .{ .min_size_content = .{ .w = 160, .h = 20 }, .gravity_y = 0.5 })) {
         // Transparent at all, it is made of something: clear, where it was opaque.
         if (B.window_material.kind == .none and transparency > 0) B.window_material.kind = .transparent;
         B.window_material.opacity = 1 - transparency;
