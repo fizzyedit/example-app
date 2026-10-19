@@ -51,12 +51,14 @@ A shape exports `pub fn layout(ctx: ?*anyopaque, f: *Layout) !dvui.App.Result` a
   pointer with its own GPU program (`core.programs`). It also builds alone as a dylib
   (`cd plugins/shader && zig build`).
 
-`build.zig` hands both to fizzy with `fizzy.buildApp`; they are linked in and registered like
-fizzy's own.
+`build.zig` hands both to fizzy with `fizzy.buildApp`, in one list with the fizzy plugins the app
+links (`fizzy.plugins.text`, or `fizzy.plugins.all`), and every one is linked in and registered
+the same way. The minimal shape links only workbench and text; the others link all of fizzy's.
+workbench is required for now.
 
 ## Your own app
 
 `build.zig` is the whole recipe: depend on fizzy (`build.zig.zon`), call `b.dependency("fizzy",
 …)` with your app's name, display name, bundle id, `.@"defer-app" = true` and your shape as
-`app-layout`, then `fizzy.buildApp` with the plugins you bundle. Pin fizzy by commit, as this
+`app-layout`, then `fizzy.buildApp` with every plugin you link, fizzy's among them. Pin fizzy by commit, as this
 repo does.
