@@ -74,7 +74,7 @@ pub fn build(b: *std.Build) !void {
 
     const run_fizzy = b.addRunArtifact(exe);
     run_fizzy.step.dependOn(b.getInstallStep());
-    if (b.args) |args| run_fizzy.addArgs(args);
+    run_fizzy.addPassthruArgs();
     b.step("run-fizzy", "Run the fizzy app in the shape -Dshape picks").dependOn(&run_fizzy.step);
 
     // A plain dvui app with tape playback: dvui as any app has it (the SDK pins it, the app picks
@@ -98,7 +98,7 @@ pub fn build(b: *std.Build) !void {
     b.step("replay", "Build the replay app").dependOn(&install_replay.step);
     const run_replay = b.addRunArtifact(replay_exe);
     run_replay.step.dependOn(&install_replay.step);
-    if (b.args) |args| run_replay.addArgs(args);
+    run_replay.addPassthruArgs();
     b.step("run-replay", "Run the replay app: a plain dvui app with tape playback").dependOn(&run_replay.step);
 
     // A plain dvui app on fizzy's backend (`dvui/main.zig`): dvui and the backend from fizzy, its
@@ -117,6 +117,6 @@ pub fn build(b: *std.Build) !void {
     b.step("dvui", "Build the dvui app").dependOn(&install_dvui.step);
     const run_dvui = b.addRunArtifact(dvui_exe);
     run_dvui.step.dependOn(&install_dvui.step);
-    if (b.args) |args| run_dvui.addArgs(args);
+    run_dvui.addPassthruArgs();
     b.step("run-dvui", "Run a plain dvui app on fizzy's backend, its dvui.osWindows OS windows").dependOn(&run_dvui.step);
 }

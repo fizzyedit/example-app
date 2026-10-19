@@ -2,28 +2,28 @@
     .name = .fizzy_example_app,
     .version = "0.1.0",
     .fingerprint = 0x70a7611209421df7,
-    .minimum_zig_version = "0.16.0",
+    .minimum_zig_version = "0.17.0",
     .dependencies = .{
         // Fizzy, the whole repo: an app builds on its framework, not only the plugin SDK. Pinned
         // by commit; fizzy's CI builds this repo against each of its pull requests, so a change
         // there that breaks an outside app fails before it lands.
         .fizzy = .{
-            .url = "https://github.com/fizzyedit/fizzy/archive/b9ba48af5941aa59fdcd4b61e829c2085cf5f3d2.tar.gz",
-            .hash = "fizzy-0.2.0-c46aVnoclwBr5ucQF97TLn-JtdXSE9jSljrZHmz7Fia0",
+            .url = "git+https://github.com/fizzyedit/fizzy#d99a7509032aea580d2db7a2eae5100bdb9b6afd",
+            .hash = "fizzy-0.2.0-c46aVltCpgC5UG61y5Nm4TH_52KKUl5xQHTS7SayqK3W",
         },
         // The plugins this app bundles beyond fizzy's own: fizzyedit/example-plugin, as any
         // plugin from its own repo, and this app's own, which also builds alone as a dylib
         // (`cd plugins/shader && zig build`).
         .hello = .{
-            .url = "https://github.com/fizzyedit/example-plugin/archive/838041afce45.tar.gz",
-            .hash = "hello-0.1.0-c1Gg4rQXAAA7Ea4vZqD4jAS7eLtXJW3QglYM4HB-17Lw",
+            .url = "git+https://github.com/fizzyedit/example-plugin#592a7386f3a27e20df53dff9b1e2f854ffad7a7b",
+            .hash = "hello-0.1.0-c1Gg4roXAABn7yCeQrlZVv3QJ7mAHsii6gFe1E6R2H7r",
         },
         .shader = .{ .path = "plugins/shader" },
         // The plugin SDK alone, for the replay app: its pinned dvui and `tape` / `replay`, with
         // nothing of fizzy the app.
         .fizzy_sdk = .{
-            .url = "https://github.com/fizzyedit/fizzy/releases/download/sdk-v0.2.20/fizzy-sdk-v0.2.20.tar.gz",
-            .hash = "fizzy-0.2.20-SGBwY7BcIQAqHKHzaj0vwADkUQNdpiap19SmKZ29Rp0W",
+            .url = "https://github.com/fizzyedit/fizzy/releases/download/sdk-v0.2.30/fizzy-sdk-v0.2.30.tar.gz",
+            .hash = "fizzy-0.2.30-SGBwY1QnJwDznUMVnSLATxXgH2e8_Vz7eMwLj9UQ0sVU",
         },
     },
     .paths = .{ "build.zig", "build.zig.zon", "shapes", "plugins", "replay", "dvui", "README.md", "LICENSE" },

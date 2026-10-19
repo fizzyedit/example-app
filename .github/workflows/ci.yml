@@ -14,7 +14,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: mlugg/setup-zig@v2
         with:
-          version: "0.16.0"
+          version: "0.17.0"
       - name: Build every shape
         run: |
           for shape in minimal studio endless; do
@@ -25,3 +25,5 @@ jobs:
           zig build -Dshape=studio -Dzon-layout=true --summary all
       - name: Build the replay app
         run: zig build replay --summary all
+      - name: Build the dvui app
+        run: zig build dvui --summary all
